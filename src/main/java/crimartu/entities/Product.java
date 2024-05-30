@@ -1,5 +1,6 @@
 package crimartu.entities;
 
+import java.util.List;
 import java.util.Random;
 
 public class Product {
@@ -13,6 +14,14 @@ public class Product {
         this.price = price;
         this.category = category;
         this.name = name;
+    }
+
+    public static Double sumTotal(List<Product> products) {
+        double sum = 0;
+        for (Product product : products) {
+            sum += product.getPrice();
+        }
+        return sum;
     }
 
     public long getId() {

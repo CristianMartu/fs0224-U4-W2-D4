@@ -42,20 +42,33 @@ public class Application {
 
         //Es2
         System.out.println("__________Es2__________");
-        Map<Customer, Double> es2 = orders.stream().collect(Collectors.groupingBy(Order::getCustomer, Collectors.summingDouble(Order -> Order.getProducts().stream().mapToDouble(Product::getPrice).sum())));
+        Map<Customer, Double> es2 = orders.stream()
+                .collect(Collectors.groupingBy(Order::getCustomer,
+                        Collectors.summingDouble(Order -> Order.getProducts().stream().mapToDouble(Product::getPrice).sum())));
+
         es2.forEach(((customer, aDouble) -> System.out.println(customer.getName() + "\t" + aDouble)));
 
         //Es3
         System.out.println("__________Es3__________");
-        OptionalDouble es3 = products.stream().mapToDouble(Product::getPrice).max();
-        if (es3.isPresent()) {
-            System.out.println("Prodotto più costoso è: " + es3.getAsDouble());
-        } else {
-            System.out.println("Nessuno elemento trovato");
-        }
+
+        List<Product> list = products.stream().sorted(Comparator.comparingDouble(Product::getPrice).reversed()).limit(3).toList();
+        System.out.println(list);
+//        OptionalDouble es3 = products.stream().mapToDouble(Product::getPrice).max();
+//        if (es3.isPresent()) {
+//            System.out.println("Prodotto più costoso è: " + es3.getAsDouble());
+//        } else {
+//            System.out.println("Nessuno elemento trovato");
+//        }
 
         //Es4
-//        Map<Double> es4 = orders.stream().map(or));
+        System.out.println("__________Es4__________");
+        Double es4 = orders.stream().flatMap(order -> order.getProducts().stream())
+                .collect(Collectors.averagingDouble(Product::getPrice));
+        System.out.println(es4);
+
+        List<Product> prodotti = orders.stream().flatMap(order -> order.getProducts().stream()).toList();
+        Double result = prodotti.stream().collect(Collectors.averagingDouble(Product::getPrice));
+        System.out.println(result);
 
         //Es5
         System.out.println("__________Es5__________");
